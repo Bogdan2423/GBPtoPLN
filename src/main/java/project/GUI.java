@@ -30,8 +30,11 @@ public class GUI extends Application {
         Button submitButton = new Button("Submit");
 
         Label error = new Label();
+        error.setFont(Font.font("Verdana", 20));
+        Label rate = new Label();
+        rate.setFont(Font.font("Verdana", 20));
 
-        VBox mainBox = new VBox(gbpLabel, gbpPrice, plnLabel, plnPrice, submitButton);
+        VBox mainBox = new VBox(gbpLabel, gbpPrice, plnLabel, plnPrice, submitButton, rate, error);
         mainBox.setAlignment(Pos.BASELINE_CENTER);
         mainBox.setPadding(new Insets(100));
         mainBox.setSpacing(50);
@@ -45,7 +48,7 @@ public class GUI extends Application {
             boolean isGbp = true;
             String priceString;
             double price = 0;
-            double convertedPrice = 0;
+            Double[] result = {0.0, 0.0};
             if (!gbpPrice.getText().isEmpty()) {
                 priceString = gbpPrice.getText();
                 isGbp = true;
@@ -63,14 +66,15 @@ public class GUI extends Application {
             }
 
             try {
-                convertedPrice = CurrencyConverter.convertGBP_PLN(price, isGbp);
+                result = CurrencyConverter.convertGBP_PLN(price, isGbp);
             } catch (Exception ex) {
                 error.setText("Error: " + ex);
             }
             if (isGbp)
-                plnPrice.setText(String.valueOf(Precision.round(convertedPrice,2)));
+                plnPrice.setText(String.valueOf(Precision.round(result[1],2)));
             else
-                gbpPrice.setText(String.valueOf(Precision.round(convertedPrice,2)));
+                gbpPrice.setText(String.valueOf(Precision.round(result[1],2)));
+            rate.setText("1 GBP = "+Precision.round(result[0],2)+" PLN");
         }));
     }
 }

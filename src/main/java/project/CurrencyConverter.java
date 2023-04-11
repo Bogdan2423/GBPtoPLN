@@ -7,7 +7,7 @@ import java.net.URL;
 import org.json.JSONObject;
 
 public class CurrencyConverter {
-    public static double convertGBP_PLN(double price, boolean isGbp) throws Exception {
+    public static Double[] convertGBP_PLN(double price, boolean isGbp) throws Exception {
         URL url = new URL("http://api.nbp.pl/api/exchangerates/rates/a/gbp/?format=json");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -23,9 +23,12 @@ public class CurrencyConverter {
         JSONObject json = new JSONObject(content.toString());
         double rate = json.getJSONArray("rates").getJSONObject(0).getDouble("mid");
 
+        Double[] result = new Double[2];
+        result[0] = rate;
         if (isGbp)
-            return price * rate;
+            result[1] = price * rate;
         else
-            return price / rate;
+            result[1] = price / rate;
+        return result;
     }
 }

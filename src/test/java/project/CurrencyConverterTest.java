@@ -10,10 +10,10 @@ public class CurrencyConverterTest {
     public void convertTest() throws Exception {
         double testPrice = 10;
 
-        double result = CurrencyConverter.convertGBP_PLN(testPrice, true);
-        double result2 = CurrencyConverter.convertGBP_PLN(result, false);
+        Double[] result = CurrencyConverter.convertGBP_PLN(testPrice, true);
+        Double[] result2 = CurrencyConverter.convertGBP_PLN(result[1], false);
 
-        assertEquals(testPrice, result2, 0.01);
-        assertTrue(result>testPrice);
+        assertEquals(testPrice, result2[1], 0.01);
+        assertTrue(result[1]>testPrice);
     }
 }
